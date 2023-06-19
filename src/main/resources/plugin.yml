@@ -1,0 +1,5 @@
+name: ByteKod
+version: '${project.version}'
+main: me.kubister11.bytekod.ByteKod
+api-version: 1.16
+author: Kubister11
