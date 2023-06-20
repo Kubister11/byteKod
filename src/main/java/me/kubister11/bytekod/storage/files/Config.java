@@ -14,4 +14,6 @@ public class Config extends ConfigFile {
     public static String MESSAGES_COMMAND$CORRECT$USE = "&7Poprawne użycie: &c[CMD]";
     public static String MESSAGES_RECEIVED = "&aPomyślnie wykorzystano kod!";
     public static String MESSAGES_ALREADY$RECEIVED = "&cWykorzystałeś/aś już ten kod!";
+    public static String MESSAGES_DELETED = "&cPomyślnie usunięto kod!";
+    public static String MESSAGES_CODE$NOT$FOUND = "&cNie znaleziono takiego kodu!";
 }

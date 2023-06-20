@@ -12,7 +12,7 @@ public class TextUtil {
 
     private static final String pluginPrefix = "&8[&ebyteKod&8]";
     public static void sendMessage (CommandSender sender, String text) { sender.sendMessage(fix(text)); }
-    public static void sendToConsole (String text) { Bukkit.getLogger().info(fix(pluginPrefix + " " + text)); }
+    public static void sendToConsole (String text) { Bukkit.getConsoleSender().sendMessage(fix(pluginPrefix + " " + text)); }
 
     public static String fix(String text) {
         return fixGradient(ChatColor.translateAlternateColorCodes('&', text).replaceAll(">>", "»").replaceAll("<<", "«"));

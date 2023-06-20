@@ -22,7 +22,7 @@ public class SQLite {
             "  `commands` text NOT NULL," +
             "  `receiveBroadcast` text NOT NULL," +
             "  `claimed` text NOT NULL" +
-            ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
+            ")";
 
     public void openConnection() {
         File dataFolder = new File(ByteKod.getInstance().getDataFolder(), database+".db");
@@ -40,6 +40,19 @@ public class SQLite {
             ByteKod.getInstance().getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
             ByteKod.getInstance().getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
+        }
+    }
+
+    public void createTable() {
+        Connection connection = getConnection();
+        try {
+            if (connection != null) {
+                Statement statement = getConnection().createStatement();
+                statement.execute(createTableSQL);
+            }
+        } catch (SQLException sQLException) {
+            System.out.println("[sqlite] table create error!");
+            sQLException.printStackTrace();
         }
     }
 
