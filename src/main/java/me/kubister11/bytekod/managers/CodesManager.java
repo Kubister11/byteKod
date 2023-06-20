@@ -2,8 +2,6 @@ package me.kubister11.bytekod.managers;
 
 import lombok.Getter;
 import me.kubister11.bytekod.objects.Code;
-import me.kubister11.bytekod.storage.files.CodesStorage;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,14 @@ public class CodesManager {
     }
 
     private void load() {
-        FileConfiguration cfg = CodesStorage.getConfigFile().getCfg();
-//        cfg.getKeys(false).forEach(CodesStorage);
+
     }
+
+    private Code getByName(String name) {
+        for (Code code : codes) {
+            if (code.getCode().equals(name)) return code;
+        }
+        return null;
+    }
+
 }

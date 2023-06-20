@@ -11,6 +11,7 @@ public class Config extends ConfigFile {
         configFile = this;
     }
 
+    public static String MESSAGES_COMMAND$CORRECT$USE = "&7Poprawne użycie: &c[CMD]";
     public static String MESSAGES_RECEIVED = "&aPomyślnie wykorzystano kod!";
     public static String MESSAGES_ALREADY$RECEIVED = "&cWykorzystałeś/aś już ten kod!";
 }
