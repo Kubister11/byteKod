@@ -1,5 +1,6 @@
 package me.kubister11.bytekod.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,6 @@ public class SerializationUtil {
 
     public static List<String> deserializeList(String data) {
         String[] split = data.split(",");
-        return Arrays.asList(split);
+        return new ArrayList<>(Arrays.asList(split));
     }
 }
