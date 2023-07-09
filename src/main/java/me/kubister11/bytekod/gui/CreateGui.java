@@ -11,9 +11,12 @@ import me.kubister11.bytekod.utils.ItemUtils;
 import me.kubister11.bytekod.utils.TextUtil;
 import me.kubister11.bytekod.utils.Utils;
 import net.wesjd.anvilgui.AnvilGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class CreateGui implements InventoryProvider {
         contents.fill(ClickableItem.empty(ItemUtils.createFilter(Material.GRAY_STAINED_GLASS_PANE, " "), false));
 
         List<String> commands = new ArrayList<>();
-        commands.add(TextUtil.fix("&7Nick gracza - &f[PLAYER]"));
+        commands.add(TextUtil.fix("&7Nick gracza - &f[P]"));
         commands.add(" ");
         int cmdId = 0;
         for (String command : code.getCommands()) {
@@ -42,7 +45,7 @@ public class CreateGui implements InventoryProvider {
         commands.add(" ");
         contents.set(1, 1, ClickableItem.of(ItemUtils.createIs(Material.GREEN_BANNER, "&aDodaj komendę", commands, false), false, inventoryClickEvent -> {
             new AnvilGUI.Builder()
-                    .text("say [PLAYER] test")
+                    .text("say [P] test")
                     .title("Podaj komendę")
                     .plugin(ByteKod.getInstance())
                     .itemLeft(new ItemStack(Material.PAPER))
@@ -59,8 +62,8 @@ public class CreateGui implements InventoryProvider {
 
         contents.set(1, 3, ClickableItem.of(ItemUtils.createIs(Material.RED_BANNER, "&cUsuń komendę", commands, false), false, inventoryClickEvent -> {
             new AnvilGUI.Builder()
-                    .text("0")
                     .title("Podaj ID komendy")
+                    .text("id")
                     .plugin(ByteKod.getInstance())
                     .itemLeft(new ItemStack(Material.PAPER))
                     .onClick((slot, stateSnapshot) -> {
@@ -77,7 +80,7 @@ public class CreateGui implements InventoryProvider {
                     }).open(player);
         }));
 
-        contents.set(1, 5, ClickableItem.of(ItemUtils.createIs(Material.BLUE_WOOL, "&9Ustaw broadcast", new ArrayList<>(List.of(code.getReceiveBroadcast())), false), false, inventoryClickEvent -> {
+        contents.set(1, 5, ClickableItem.of(ItemUtils.createIs(Material.BLUE_WOOL, "&9Ustaw broadcast", new ArrayList<>(List.of("&7Wpisz &fOFF &7aby wyłączyć!", " ", code.getReceiveBroadcast())), false), false, inventoryClickEvent -> {
             new AnvilGUI.Builder()
                     .text(code.getReceiveBroadcast())
                     .title("Wpisz tekst")
@@ -94,7 +97,31 @@ public class CreateGui implements InventoryProvider {
                     }).open(player);
         }));
 
-        contents.set(1, 7, ClickableItem.empty(ItemUtils.createIs(Material.PAPER, "&7Użycia kodu: &f" + code.getClaimed().size(), false), false));
+        contents.set(1, 7, ClickableItem.of(ItemUtils.createIs(Material.PAPER, "&7Użycia kodu: &f" + code.getClaimed().size(), new ArrayList<>(List.of(" ", "&7Kliknij &flewym, &7aby zresetować konkretnego gracza.", "&7Kliknij &fprawym, &7aby zresetować wszystkie użycia.")), false), false, inventoryClickEvent -> {
+            if (inventoryClickEvent.getClick() == ClickType.LEFT) {
+                new AnvilGUI.Builder()
+                        .title("Wpisz nick gracza")
+                        .text("nick")
+                        .plugin(ByteKod.getInstance())
+                        .itemLeft(new ItemStack(Material.PAPER))
+                        .onClick((slot, stateSnapshot) -> {
+                            if (slot != AnvilGUI.Slot.OUTPUT) {
+                                return Collections.emptyList();
+                            }
+
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(stateSnapshot.getText());
+                            code.getClaimed().remove(offlinePlayer.getUniqueId().toString());
+                            Utils.runAsync(ByteKod.getInstance(), code::update);
+                            return List.of(AnvilGUI.ResponseAction.run(() -> open(player, code)));
+                        }).open(player);
+            } else if (inventoryClickEvent.getClick() == ClickType.RIGHT) {
+                ConfirmGui.open(player, "Resetowanie użyć kodu", () -> {
+                    code.getClaimed().clear();
+                    Utils.runAsync(ByteKod.getInstance(), code::update);
+                    open(player, code);
+                });
+            }
+        }));
 
 
         contents.set(2, 8, ClickableItem.of(ItemUtils.createIs(Material.BARRIER, "&cUsuń", false), false, inventoryClickEvent -> {

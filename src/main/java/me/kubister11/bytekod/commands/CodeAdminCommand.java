@@ -29,7 +29,7 @@ public class CodeAdminCommand extends ByteCommand {
         Code kod = ByteKod.getCodesManager().getByName(code);
         if (kod == null) {
             ConfirmGui.open(p,"Tworzenie nowego kodu", () -> {
-                Code created = new Code(code, new ArrayList<>(), "&8>> &7Gracz &f[PLAYER] &7odebrał nagrodę!", new ArrayList<>());
+                Code created = new Code(code, new ArrayList<>(), "&8>> &7Gracz &f[P] &7odebrał nagrodę!", new ArrayList<>());
                 ByteKod.getCodesManager().getCodes().add(created);
                 Utils.runAsync(ByteKod.getInstance(), created::insert);
                 CreateGui.open(p, created);

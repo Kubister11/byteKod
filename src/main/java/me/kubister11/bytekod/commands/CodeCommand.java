@@ -35,9 +35,9 @@ public class CodeCommand extends ByteCommand {
 
         kod.getClaimed().add(p.getUniqueId().toString());
         Utils.runAsync(ByteKod.getInstance(), kod::update);
-        kod.getCommands().forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("[PLAYER]", p.getName())));
+        kod.getCommands().forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("[P]", p.getName())));
         TextUtil.sendMessage(sender, Config.MESSAGES_RECEIVED);
-        Bukkit.broadcastMessage(TextUtil.fix(kod.getReceiveBroadcast().replace("[PLAYER]", p.getName())));
+        if (!kod.getReceiveBroadcast().equals("OFF")) Bukkit.broadcastMessage(TextUtil.fix(kod.getReceiveBroadcast().replace("[P]", p.getName())));
 
         return true;
     }

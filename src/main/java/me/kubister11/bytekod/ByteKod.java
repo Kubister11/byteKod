@@ -12,6 +12,7 @@ import me.kubister11.bytekod.utils.TextUtil;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public final class ByteKod extends JavaPlugin {
@@ -49,6 +50,11 @@ public final class ByteKod extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        metrics.shutdown();
+        try {
+            sqLite.getConnection().close();
+            metrics.shutdown();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

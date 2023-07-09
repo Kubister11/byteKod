@@ -4,7 +4,6 @@ import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
-import me.kubister11.bytekod.storage.files.Config;
 import me.kubister11.bytekod.utils.ItemUtils;
 import me.kubister11.bytekod.utils.TextUtil;
 import org.bukkit.Material;
